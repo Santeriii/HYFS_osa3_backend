@@ -1,0 +1,27 @@
+{
+  "name": "numbersbackend",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "echo \\\"Error: no test specified\\\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Santeriii/HYFS_osa3_backend.git"
+  },
+  "author": "Santeri",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Santeriii/HYFS_osa3_backend/issues"
+  },
+  "homepage": "https://github.com/Santeriii/HYFS_osa3_backend#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  }
+}
