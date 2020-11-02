@@ -1,6 +1,8 @@
 const express = require('express')
 const app = express()
 
+app.use(express.json())
+
 let persons = [
     { id: 1, name: 'Arto Hellas', number: '040-123456' },
     { id: 2, name: 'Ada Lovelace', number: '39-44-5323523' },
@@ -24,12 +26,31 @@ app.get('/api/persons/:id', (request, response) => {
 })
 
 app.post('/api/persons', (request, response) => {
-  const maxId = persons.length > 0
-    ? Math.max(...persons.map(n => n.id)) 
-    : 0
+  const requestBody = request.body
 
-  const person = request.body
-  person.id = maxId + 1
+  if (!requestBody.name) {
+    return response.status(400).json({ 
+      error: 'content missing' 
+    })
+  }
+
+  persons.map(person => {
+    if (person.name === requestBody.name) {
+      return response.status(400).json({ 
+        error: 'name already in list' 
+      })
+    }
+  })
+
+  const id = Math.floor(Math.random() * 99999999)
+
+  const person = {
+    name: requestBody.name,
+    number: requestBody.number,
+    id: id,
+  }
+
+  console.log(person)
 
   persons = persons.concat(person)
 
