@@ -19,7 +19,11 @@
   },
   "homepage": "https://github.com/Santeriii/HYFS_osa3_backend#readme",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.17.1",
+    "git": "^0.1.5",
+    "git-all": "0.0.3",
+    "heroku": "^7.47.0",
     "morgan": "^1.10.0"
   },
   "devDependencies": {
