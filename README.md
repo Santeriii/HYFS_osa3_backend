@@ -1,1 +1,1 @@
-https://osa3backend.herokuapp.com/
+https://part3backend.herokuapp.com/
