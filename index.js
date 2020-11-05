@@ -1,7 +1,10 @@
+require('dotenv').config()
 const express = require('express')
 const morgan = require('morgan')
 const app = express()
 const cors = require('cors')
+const PhoneNumber = require('./models/phoneNumber')
+const { response } = require('express')
 
 morgan.token('body', (req, res) => JSON.stringify(req.body));
 
@@ -18,49 +21,32 @@ let persons = [
 ]
 
 app.get('/api/persons', (req, res) => {
-  res.json(persons)
-  morgan('tiny')
+  PhoneNumber.find({}).then(numbers => {
+    res.json(numbers)
+  })
 })
 
 app.get('/api/persons/:id', (request, response) => {
-    const id = Number(request.params.id)
-    const person = persons.find(person => person.id === id)
-
-    if (person) {
-        response.json(person)
-    } else {
-        response.status(404).end()
-    }
+    PhoneNumber.findById(request.params.id).then(person => {
+      response.json(person)
+    })
 })
 
 app.post('/api/persons', (request, response) => {
   const requestBody = request.body
 
-  if (!requestBody.name) {
-    return response.status(400).json({ 
-      error: 'content missing' 
-    })
+  if (requestBody.name === undefined) {
+    return response.status(400).json({ error: 'name missing' })
   }
 
-  persons.map(person => {
-    if (person.name === requestBody.name) {
-      return response.status(400).json({ 
-        error: 'name already in list' 
-      })
-    }
-  })
-
-  const id = Math.floor(Math.random() * 99999999)
-
-  const person = {
+  const person = new PhoneNumber ({
     name: requestBody.name,
     number: requestBody.number,
-    id: id,
-  }
+  })
 
-  persons = persons.concat(person)
-
-  response.json(person)
+  person.save().then(savedPerson => {
+    response.json(savedPerson)
+  })
 })
 
 app.delete('/api/persons/:id', (request, response) => {
@@ -74,7 +60,7 @@ app.get('/info', (req, res) => {
     res.send(`<p>Phonebook has info for ${persons.length} people</p><br/>${Date()}`)
 })
 
-const PORT = process.env.PORT || 5000
+const PORT = process.env.PORT
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
